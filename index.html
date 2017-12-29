@@ -1,8 +1,55 @@
 <!DOCTYPE html>
 
-<head></head>
+<head>
+    <script src="https://www.gstatic.com/firebasejs/4.8.1/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+        apiKey: "AIzaSyCpdaBGE4RMXf40palfn8RmGGbpopJkwjA",
+        authDomain: "lolis-me.firebaseapp.com",
+        databaseURL: "https://lolis-me.firebaseio.com",
+        projectId: "lolis-me",
+        storageBucket: "lolis-me.appspot.com",
+        messagingSenderId: "958738153770"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+</head>
 
 <body>
-    <p>Global lolis loved:</p>
-    <p id="value">VALUE</p>
+    <div id="main">
+        <div id="stats">
+            <h1>Global lolis loved:</h1>
+            <h1 id="value"></h1>
+        </div>
+        
+        <div>
+            <button onclick="increase()">Headpat a Loli</button>
+        </div>
+
+    </div>
+    
+    <div id="footer">
+        <p>Site created by joshwason1</p>
+    </div> 
+
 </body>
+
+<script>
+    const countRef = firebase.database().ref('count');
+    countRef.on('value', function(snapshot) {
+        update(snapshot.val());
+    })
+
+    function update(count) {
+        document.getElementById("value").innerHTML = count;
+    }
+
+    function increase() {
+        countRef.transaction(function(count) {
+            count++;
+            return count;
+        });
+    }
+</script>
